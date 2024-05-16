@@ -1,0 +1,92 @@
+[
+  {
+    "id": "3k4l5m6n7o",
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald"
+  },
+  {
+    "id": "4p5q6r7s8t",
+    "title": "The Catcher in the Rye",
+    "author": "J.D. Salinger"
+  },
+  {
+    "id": "5u6v7w8x9y",
+    "title": "The Hobbit",
+    "author": "J.R.R. Tolkien"
+  },
+  {
+    "id": "6z7a8b9c0d",
+    "title": "Fahrenheit 451",
+    "author": "Ray Bradbury"
+  },
+  {
+    "id": "7e8f9g0h1i",
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen"
+  },
+  {
+    "id": "8j9k0l1m2n",
+    "title": "The Lord of the Rings",
+    "author": "J.R.R. Tolkien"
+  },
+  {
+    "id": "9o0p1q2r3s",
+    "title": "Animal Farm",
+    "author": "George Orwell"
+  },
+  {
+    "id": "0t1u2v3w4x",
+    "title": "Moby-Dick",
+    "author": "Herman Melville"
+  },
+  {
+    "id": "1y2z3a4b5c",
+    "title": "Jane Eyre",
+    "author": "Charlotte Brontë"
+  },
+  {
+    "id": "2d3e4f5g6h",
+    "title": "Brave New World",
+    "author": "Aldous Huxley"
+  },
+  {
+    "id": "3i4j5k6l7m",
+    "title": "Wuthering Heights",
+    "author": "Emily Brontë"
+  },
+  {
+    "id": "4n5o6p7q8r",
+    "title": "The Odyssey",
+    "author": "Homer"
+  },
+  {
+    "id": "5s6t7u8v9w",
+    "title": "Crime and Punishment",
+    "author": "Fyodor Dostoevsky"
+  },
+  {
+    "id": "6x7y8z9a0b",
+    "title": "War and Peace",
+    "author": "Leo Tolstoy"
+  },
+  {
+    "id": "7c8d9e0f1g",
+    "title": "The Brothers Karamazov",
+    "author": "Fyodor Dostoevsky"
+  },
+  {
+    "id": "8h9i0j1k2l",
+    "title": "The Adventures of Huckleberry Finn",
+    "author": "Mark Twain"
+  },
+  {
+    "id": "9m0n1o2p3q",
+    "title": "The Divine Comedy",
+    "author": "Dante Alighieri"
+  },
+  {
+    "id": "0r1s2t3u4v",
+    "title": "Harry Potter",
+    "author": "J. K. Rowling"
+  }
+]
