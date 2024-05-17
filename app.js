@@ -1,54 +1,33 @@
-const yargs = require("yargs");
-const { hideBin } = require("yargs/helpers");
+const express = require('express'); // импортируем express
+const moment = require('moment'); // работа с датой и временем
+const fs = require('fs/promises'); // работа с файловой системой
+const cors = require('cors'); // работа с CORS запросами
 
-const books = require("./books");
+const usersRouter = require('./routes/api/users');
 
-const booksAction = async ({ action, id, title, author }) => {
-  switch (action) {
-    case "read":
-      const allBooks = await books.getAllBooks();
-      return console.log(allBooks);
-    case "getById":
-      const oneBook = await books.getBookById(id);
-      return console.log(oneBook);
-    case "add":
-      const newBook = await books.addNewBook({ title, author });
-      return console.log(newBook);
-    case "updateById":
-      const updateBook = await books.updateById(id, { title, author });
-      return console.log(updateBook);
-    case "delete":
-      const deletedBook = await books.deleteBook(id);
-      return console.log(deletedBook);
-    default:
-      return console.log("Unknown comand");
-  }
-};
+const app = express(); // app = веб сервер
 
-// booksAction({ action: "read" });
-// booksAction({ action: "delete", id: "2f3g4h5i6j" });
-// booksAction({ action: "getById", id: "sdssdsdsd" });
-// booksAction({
-//   action: "add",
-//   title: "От кого мы произошли",
-//   author: "Э. Мульдашев",
-// });
-// booksAction({
-//   action: "updateById",
-//   id: "0r1s2t3u4v",
-//   title: "Harry Potter",
-//   author: "J. K. Rowling",
-// });
+app.use(cors());
 
-// ПОДКЛЮЧЕНИЕ НАШИХ ЭКШЕНОВ, ЧТОБ МОЖНО БЫЛО ВЫЗЫВАТЬ ИХ ИЗ КОМАНДНОЙ СТРОКИ
+app.use(async (req, _, next) => {
+  const { method, url } = req;
+  const date = moment().format('DD-MM-YYYY hh:mm:ss');
+  await fs.appendFile('./public/server.log', `\n${method} ${url} ${date}`);
+  next();
+});
 
-// Это без библиотеки YARGS
-// const actionIndex = process.argv.indexOf("--action");
-// if (actionIndex !== -1) {
-//   const action = process.argv[actionIndex + 1];
-//   booksAction({ action });
-// }
+app.use('/api/users', usersRouter);
 
-const arr = hideBin(process.argv);
-const { argv } = yargs(arr);
-booksAction(argv);
+app.use(async (req, res) => {
+  res.status(404).json({ message: 'Not found' });
+});
+
+app.use(async (err, req, res, next) => {
+  const { status = 500, message = 'Server error' } = err;
+  res.status(status).json({ message });
+});
+
+// Запуск web сервера на порте 7777
+app.listen(3000, () => {
+  console.log('Server running');
+});

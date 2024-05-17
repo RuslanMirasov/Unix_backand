@@ -1,0 +1,42 @@
+[
+  {
+    "id": "V1StGXR8_Z5jdHi6B-myT",
+    "name": "Ruslan Mirasov",
+    "email": "info@mirasov.dev",
+    "password": "QWERTmnbvc100@",
+    "avatarUrl": "https://i.pravatar.cc/450?img=1"
+  },
+  {
+    "id": "M5KkKQsVZ89FhuE7KnTI9",
+    "name": "Bob Smith",
+    "email": "bob.smith@example.com",
+    "password": "dsrgsrh345rgsrg",
+    "avatarUrl": "https://i.pravatar.cc/450?img=2"
+  },
+  {
+    "id": "tY8VkbkGQ2T6gF5Lp5DWl",
+    "name": "Carol White",
+    "email": "carol.white@example.com",
+    "password": "1234jfysgTRE33",
+    "avatarUrl": "https://i.pravatar.cc/450?img=3"
+  },
+  {
+    "id": "EiqgRWI5zZcrtCwWQukJK"
+  },
+  {
+    "id": "JeAEysK4lx5ch4fh0wYT0",
+    "name": "Василий",
+    "email": "alibabaev@gmail.com",
+    "password": "QWERTmnbvc100@",
+    "avatarUrl": "https://i.pravatar.cc/450?img=3"
+  },
+  {
+    "id": "D9acItxp70rPP0Ikpsduy"
+  },
+  {
+    "id": "oSi-hTloJ4C4hA1kLqyat"
+  },
+  {
+    "id": "vzH38zBfBx9D1xOGUgfGg"
+  }
+]
