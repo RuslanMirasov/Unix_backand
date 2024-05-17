@@ -3,12 +3,15 @@ const moment = require('moment'); // работа с датой и времен�
 const fs = require('fs/promises'); // работа с файловой системой
 const cors = require('cors'); // работа с CORS запросами
 
-const usersRouter = require('./routes/api/users');
-
+const usersRouter = require('./routes/api/users'); // подключаем USERS из routes/api
 const app = express(); // app = веб сервер
 
-app.use(cors());
+// Middleware для разбора JSON и URL-кодированных данных
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors()); //Настройка кроссдоменных запросов CORS
 
+//Записываем каждый HTTP запрос в файл public/server.log
 app.use(async (req, _, next) => {
   const { method, url } = req;
   const date = moment().format('DD-MM-YYYY hh:mm:ss');
@@ -28,6 +31,7 @@ app.use(async (err, req, res, next) => {
 });
 
 // Запуск web сервера на порте 7777
-app.listen(3000, () => {
-  console.log('Server running');
+const PORT = 7777;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
