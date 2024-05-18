@@ -1,3 +1,7 @@
+// mirasovdev
+// 8TvtxxDXVu6332d3
+// mongodb+srv://mirasovdev:8TvtxxDXVu6332d3@unix.acgy0lj.mongodb.net/
+
 const express = require('express'); // импортируем express
 const moment = require('moment'); // работа с датой и временем
 const fs = require('fs/promises'); // работа с файловой системой
@@ -32,8 +36,4 @@ app.use(async (err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-// Запуск web сервера на порте 7777
-const PORT = 7777;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+module.exports = app;
