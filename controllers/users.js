@@ -2,59 +2,42 @@ const { ctrlWrapper, HttpError } = require('../helpers');
 
 const users = require('../models/users');
 
-// const Joi = require('joi');
-// const emailRegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-// const addSchema = Joi.object({
-//   name: Joi.string(),
-//   email: Joi.string().pattern(emailRegExp).messages({ 'string.pattern.base': 'Wrong email format!' }),
-//   password: Joi.string().min(6).pattern(new RegExp('(?=.*[0-9])(?=.*[A-Z])')).required().messages({
-//     'string.min': 'Password must be at least 6 characters long.',
-//     'string.pattern.base': 'Password must contain numbers and uppercase letters.',
-//     'any.required': 'Password is a required field.',
-//   }),
-//   avatarUrl: Joi.string().uri().optional().allow(''),
-// });
-
+// GET ALL
 const getAll = async (req, res) => {
-  const result = await users.getAll();
+  const result = await users.getAll(); // logic;
   res.json(result);
 };
 
+// GET USER BY ID
 const getById = async (req, res) => {
   const { id } = req.params;
-  const result = await users.getById(id);
+  const result = await users.getById(id); // logic;;
   if (!result) {
     throw HttpError(404, 'Not found');
   }
   res.json(result);
 };
 
+// ADD NEW USER
 const add = async (req, res) => {
-  //   const { error } = addSchema.validate(req.body);
-  //   if (error) {
-  //     throw HttpError(400, error.message);
-  //   }
-  const result = await users.addNew(req.body);
+  const result = await users.addNew(req.body); // logic;;
   res.status(201).json(result);
 };
 
+// UPDATE USER
 const updateById = async (req, res) => {
-  //   const { error } = addSchema.validate(req.body);
-  //   if (error) {
-  //     throw HttpError(400, error.message);
-  //   }
   const { id } = req.params;
-  const result = await users.updateById(id, req.body);
+  const result = await users.updateById(id, req.body); // logic;;
   if (!result) {
     throw HttpError(404, 'Not found');
   }
   res.json(result);
 };
 
+// DELETE USER
 const deleteById = async (req, res) => {
   const { id } = req.params;
-  const result = await users.deleteById(id);
+  const result = await users.deleteById(id); // logic;;
   if (!result) {
     throw HttpError(404, 'Not found');
   }

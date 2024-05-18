@@ -19,8 +19,10 @@ app.use(async (req, _, next) => {
   next();
 });
 
+// Подключение всех маршрутов приложения
 app.use('/api/users', usersRouter);
 
+// Обработки ошибок
 app.use(async (req, res) => {
   res.status(404).json({ message: 'Not found' });
 });
