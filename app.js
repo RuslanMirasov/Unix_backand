@@ -1,13 +1,11 @@
-// mirasovdev
-// 8TvtxxDXVu6332d3
-// mongodb+srv://mirasovdev:8TvtxxDXVu6332d3@unix.acgy0lj.mongodb.net/
-
 const express = require('express'); // импортируем express
-const moment = require('moment'); // работа с датой и временем
+// const moment = require('moment'); // работа с датой и временем
 const fs = require('fs/promises'); // работа с файловой системой
 const cors = require('cors'); // работа с CORS запросами
+require('dotenv').config(); // Добавляем секретные данные в .env
 
 const usersRouter = require('./routes/api/users'); // подключаем USERS из routes/api
+
 const app = express(); // app = веб сервер
 
 // Middleware для разбора JSON и URL-кодированных данных
