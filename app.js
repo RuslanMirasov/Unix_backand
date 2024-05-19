@@ -4,6 +4,7 @@ const fs = require('fs/promises'); // работа с файловой сист�
 const cors = require('cors'); // работа с CORS запросами
 require('dotenv').config(); // Добавляем секретные данные в .env
 
+const authRouter = require('./routes/api/auth'); // подключаем USERS из routes/api
 const usersRouter = require('./routes/api/users'); // подключаем USERS из routes/api
 
 const app = express(); // app = веб сервер
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors()); //Настройка кроссдоменных запросов CORS
 
 // Подключение всех маршрутов приложения
+app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 
 // Обработки ошибок
