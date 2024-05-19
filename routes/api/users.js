@@ -1,18 +1,20 @@
 const express = require('express');
 const controller = require('../../controllers/users');
-const { validateBody } = require('../../middlewares');
-const userSchema = require('../../schemas/user');
+const { validateBody, isValidId } = require('../../middlewares');
+const { userJoiSchema, userJoiVerifySchema } = require('../../schemas/user');
 
 const router = express.Router();
 
 router.get('/', controller.getAll);
 
-router.get('/:id', controller.getById);
+router.get('/:id', isValidId, controller.getById);
 
-router.post('/', validateBody(userSchema), controller.add);
+router.post('/', validateBody(userJoiSchema), controller.add);
 
-router.put('/:id', validateBody(userSchema), controller.updateById);
+router.put('/:id', isValidId, validateBody(userJoiSchema), controller.updateById);
 
-router.delete('/:id', controller.deleteById);
+router.patch('/:id/verify', isValidId, validateBody(userJoiVerifySchema), controller.updateVerify);
+
+router.delete('/:id', isValidId, controller.deleteById);
 
 module.exports = router;
