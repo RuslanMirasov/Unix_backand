@@ -1,8 +1,6 @@
 const https = require('https');
 const cheerio = require('cheerio');
-const path = require('path');
 const { DB_URL } = process.env;
-const placeholderPath = path.join(__dirname, 'public', 'img', 'placeholder.jpg');
 
 async function fetchHeadHTML(url) {
   return new Promise((resolve, reject) => {
@@ -50,7 +48,7 @@ async function fetchMetadata(url) {
     const image =
       head('meta[property = "og:image"]').attr('content') ||
       head('meta[name = "og:image"]').attr('content') ||
-      placeholderPath;
+      DB_URL + '/img/placeholder.jpg';
 
     return { title, image };
   } catch (error) {
