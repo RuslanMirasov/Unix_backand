@@ -21,7 +21,7 @@ const errorMessageList = {
   307: 'Temporary Redirect',
   308: 'Permanent Redirect',
   400: 'Bad Request',
-  401: 'Unauthorized',
+  401: 'Not authorized',
   402: 'Payment Required',
   403: 'Forbidden',
   404: 'Not Found',

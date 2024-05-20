@@ -26,14 +26,24 @@ const getById = async (req, res) => {
 
 // ADD NEW PROJECT
 const add = async (req, res) => {
-  const url = 'https://mirasov.dev/';
+  const { link } = req.body;
+  const { _id: owner } = req.user;
 
-  const result = await fetchMetadata(url).then(metadata => {
+  const project = await Project.findOne({ link });
+  if (project) {
+    throw HttpError(409, 'Project already exist');
+  }
+
+  const metadata = await fetchMetadata(link).then(metadata => {
+    if (!metadata) {
+      throw HttpError(400, 'Link is not valid');
+    }
     return {
       name: metadata.title,
       thumbnail: metadata.image,
     };
   });
+  const result = await Project.create({ ...req.body, ...metadata, owner });
   res.json(result);
 };
 

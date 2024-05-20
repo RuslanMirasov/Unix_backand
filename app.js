@@ -1,5 +1,6 @@
 const express = require('express'); // импортируем express
 const path = require('path');
+const multer = require('multer');
 // const moment = require('moment'); // работа с датой и временем
 const fs = require('fs/promises'); // работа с файловой системой
 const cors = require('cors'); // работа с CORS запросами

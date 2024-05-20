@@ -41,12 +41,10 @@ const login = async (req, res) => {
   //генерируем JWT token
   const payload = { id: user._id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
+  await User.findByIdAndUpdate(user._id, { token });
 
   res.json({ token });
 };
-
-//LOGOUT
-const logout = async (req, res) => {};
 
 // GET CURRENT USER
 const getCurrent = async (req, res) => {
@@ -58,9 +56,17 @@ const getCurrent = async (req, res) => {
   });
 };
 
+//LOGOUT
+const logout = async (req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { token: '' });
+
+  res.json({ message: 'Logout success' });
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
-  logout: ctrlWrapper(logout),
   getCurrent: ctrlWrapper(getCurrent),
+  logout: ctrlWrapper(logout),
 };

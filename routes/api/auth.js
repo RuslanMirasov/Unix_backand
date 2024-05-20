@@ -9,7 +9,7 @@ router.post('/register', validateBody(registerSchema), controller.register);
 
 router.post('/login', validateBody(loginSchema), controller.login);
 
-router.post('/logout', validateBody(loginSchema), controller.logout);
+router.post('/logout', authenticate, controller.logout);
 
 router.get('/current', authenticate, controller.getCurrent);
 

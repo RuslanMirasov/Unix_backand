@@ -5,8 +5,8 @@ const { handleMongooseError } = require('../helpers');
 //MONGOOSE SCHEMA (Обрабатывает то, что запишется в базу)
 const projectMongooseSchema = new Schema(
   {
-    link: { type: String, required: true },
-    name: { type: String, required: true, default: 'New Project' },
+    link: { type: String, unique: true, required: true },
+    name: { type: String, required: true },
     thumbnail: { type: String, required: true },
     owner: { type: Schema.Types.ObjectId, ref: 'user', required: true },
   },
@@ -18,8 +18,8 @@ projectMongooseSchema.post('save', handleMongooseError);
 // JOI SCHEMAS (Обрабатывает то, что идёт с frontend)
 const projectSchema = Joi.object({
   link: Joi.string().uri().required(),
-  name: Joi.string().required(),
-  thumbnail: Joi.string().uri().required(),
+  name: Joi.string(),
+  thumbnail: Joi.string().uri(),
   owner: Joi.string(),
 });
 

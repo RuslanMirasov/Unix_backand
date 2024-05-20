@@ -25,6 +25,10 @@ const userMongooseSchema = new Schema(
     avatarUrl: {
       type: String,
     },
+    token: {
+      type: String,
+      default: '',
+    },
   },
   { versionKey: false, timestamps: true }
 );
