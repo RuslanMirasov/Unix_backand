@@ -26,7 +26,7 @@ const register = async (req, res) => {
   res.status(201).json(result);
 };
 
-// REGISTRATION / SIGNOUT
+// LOGIN
 const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
@@ -45,7 +45,22 @@ const login = async (req, res) => {
   res.json({ token });
 };
 
+//LOGOUT
+const logout = async (req, res) => {};
+
+// GET CURRENT USER
+const getCurrent = async (req, res) => {
+  const { email, name, avatarUrl } = req.user;
+  res.json({
+    name,
+    email,
+    avatarUrl,
+  });
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
+  logout: ctrlWrapper(logout),
+  getCurrent: ctrlWrapper(getCurrent),
 };

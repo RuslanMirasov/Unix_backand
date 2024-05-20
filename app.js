@@ -6,17 +6,18 @@ require('dotenv').config(); // Добавляем секретные данны�
 
 const authRouter = require('./routes/api/auth'); // подключаем USERS из routes/api
 const usersRouter = require('./routes/api/users'); // подключаем USERS из routes/api
+const projectsRouter = require('./routes/api/projects'); // подключаем PROJECTS из routes/api
 
-const app = express(); // app = веб сервер
-
-// Middleware для разбора JSON и URL-кодированных данных
+// app настройки
+const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors()); //Настройка кроссдоменных запросов CORS
+app.use(cors());
 
 // Подключение всех маршрутов приложения
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/projects', projectsRouter);
 
 // Обработки ошибок
 app.use(async (req, res) => {
