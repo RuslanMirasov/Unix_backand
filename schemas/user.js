@@ -22,6 +22,10 @@ const userMongooseSchema = new Schema(
       minlength: 6,
       required: true,
     },
+    subscribe: {
+      type: Boolean,
+      default: false,
+    },
     avatarUrl: {
       type: String,
     },
@@ -36,6 +40,7 @@ const userMongooseSchema = new Schema(
 userMongooseSchema.post('save', handleMongooseError);
 
 // JOI SCHEMAS (Обрабатывает то, что идёт с frontend)
+//Register
 const registerSchema = Joi.object({
   name: Joi.string(),
   email: Joi.string().pattern(new RegExp(emailRegExp)).messages({
@@ -46,9 +51,11 @@ const registerSchema = Joi.object({
     'string.pattern.base': 'Password must contain numbers and uppercase letters.',
     'any.required': 'Password is a required field.',
   }),
+  subscribe: Joi.boolean(),
   avatarUrl: Joi.string().uri(),
 });
 
+//Login
 const loginSchema = Joi.object({
   email: Joi.string().pattern(new RegExp(emailRegExp)).messages({
     'string.pattern.base': 'Wrong email format!',

@@ -1,23 +1,21 @@
-const express = require('express'); // импортируем express
-const path = require('path');
-const multer = require('multer');
+const express = require('express');
 // const moment = require('moment'); // работа с датой и временем
-const fs = require('fs/promises'); // работа с файловой системой
-const cors = require('cors'); // работа с CORS запросами
-require('dotenv').config(); // Добавляем секретные данные в .env
+const cors = require('cors');
+require('dotenv').config();
 
-const authRouter = require('./routes/api/auth'); // подключаем USERS из routes/api
-const usersRouter = require('./routes/api/users'); // подключаем USERS из routes/api
-const projectsRouter = require('./routes/api/projects'); // подключаем PROJECTS из routes/api
+// Импорт всех маршрутов приложения
+const authRouter = require('./routes/api/auth');
+const usersRouter = require('./routes/api/users');
+const projectsRouter = require('./routes/api/projects');
 
-// app настройки
+// app настройки сервера
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Подключение всех маршрутов приложения
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/projects', projectsRouter);

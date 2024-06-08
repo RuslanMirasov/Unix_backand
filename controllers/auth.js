@@ -1,10 +1,14 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = process.env;
+const path = require('path');
+const fs = require('fs/promises');
 
 const User = require('../models/user');
 
 const { ctrlWrapper, HttpError, generateAvatar } = require('../helpers');
+
+const avatarDir = path.join(__dirname, '../', 'public', 'avatars');
 
 // REGISTRATION / SIGNOUT
 const register = async (req, res) => {
@@ -64,9 +68,23 @@ const logout = async (req, res) => {
   res.json({ message: 'Logout success' });
 };
 
+//CHANGEA AVATAR
+const changeAvatar = async (req, res) => {
+  const { _id } = req.user;
+  const { path: tempUpload, originalname } = req.file;
+  const filename = `${_id}_${originalname}`;
+  const resultUpload = path.join(avatarDir, filename);
+  await fs.rename(tempUpload, resultUpload);
+  const avatarUrl = path.join('avatars', filename);
+  await User.findByIdAndUpdate(_id, { avatarUrl });
+
+  res.json({ avatarUrl });
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
+  changeAvatar: ctrlWrapper(changeAvatar),
 };
