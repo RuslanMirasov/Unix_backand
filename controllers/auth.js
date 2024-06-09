@@ -61,6 +61,32 @@ const login = async (req, res) => {
   });
 };
 
+// UPDATE USER
+const updateUser = async (req, res) => {
+  const { name, subscribe, email, password, oldpassword } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw HttpError(404, 'User not found!');
+  }
+
+  if (oldpassword && password) {
+    // Если переданы и старый и новый пароли
+    const passwordCompare = await bcrypt.compare(oldpassword, user.password);
+    if (!passwordCompare) {
+      throw HttpError(401, 'Old password is incorrect!');
+    }
+    // Хешируем новый пароль перед обновлением
+    const hashPassword = await bcrypt.hash(password, 10);
+    await User.findByIdAndUpdate(user._id, { password: hashPassword });
+  }
+
+  // Обновляем остальные поля пользователя
+  const result = await User.findByIdAndUpdate(user._id, { name, subscribe, email }, { new: true });
+
+  res.json(result);
+};
+
 // GET CURRENT USER
 const getCurrent = async (req, res) => {
   const { email, name, avatarUrl, subscribe } = req.user;
@@ -141,4 +167,5 @@ module.exports = {
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
   changeAvatar: ctrlWrapper(changeAvatar),
+  updateUser: ctrlWrapper(updateUser),
 };

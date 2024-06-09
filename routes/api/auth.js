@@ -15,4 +15,6 @@ router.get('/current', authenticate, controller.getCurrent);
 
 router.patch('/avatar', authenticate, upload.single('avatar'), controller.changeAvatar);
 
+router.patch('/update', authenticate, controller.updateUser);
+
 module.exports = router;
