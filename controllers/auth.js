@@ -1,14 +1,17 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = process.env;
+
+//всё для аватарки---------------------------------------
 const path = require('path');
 const fs = require('fs/promises');
+const Jimp = require('jimp');
+const avatarDir = path.join(__dirname, '../', 'public', 'avatars');
+//-------------------------------------------------------
 
 const User = require('../models/user');
 
 const { ctrlWrapper, HttpError, generateAvatar } = require('../helpers');
-
-const avatarDir = path.join(__dirname, '../', 'public', 'avatars');
 
 // REGISTRATION / SIGNOUT
 const register = async (req, res) => {
@@ -47,16 +50,25 @@ const login = async (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
   await User.findByIdAndUpdate(user._id, { token });
 
-  res.json({ token });
+  res.json({
+    token,
+    user: {
+      name: user.name,
+      email: user.email,
+      avatarUrl: user.avatarUrl,
+      subscribe: user.subscribe,
+    },
+  });
 };
 
 // GET CURRENT USER
 const getCurrent = async (req, res) => {
-  const { email, name, avatarUrl } = req.user;
+  const { email, name, avatarUrl, subscribe } = req.user;
   res.json({
     name,
     email,
     avatarUrl,
+    subscribe,
   });
 };
 
@@ -68,17 +80,59 @@ const logout = async (req, res) => {
   res.json({ message: 'Logout success' });
 };
 
-//CHANGEA AVATAR
+//CHANGE AVATAR
 const changeAvatar = async (req, res) => {
   const { _id } = req.user;
   const { path: tempUpload, originalname } = req.file;
-  const filename = `${_id}_${originalname}`;
+  const extension = path.extname(originalname);
+  const filename = `avatar_${_id}${extension}`;
   const resultUpload = path.join(avatarDir, filename);
-  await fs.rename(tempUpload, resultUpload);
-  const avatarUrl = path.join('avatars', filename);
-  await User.findByIdAndUpdate(_id, { avatarUrl });
 
-  res.json({ avatarUrl });
+  try {
+    // Удаляем старый аватар, если существует
+    await removeOldAvatar(_id);
+
+    // Обрабатываем и сохраняем новое изображение
+    await processAndSaveImage(tempUpload, resultUpload);
+
+    // Обновляем URL-адрес аватара в базе данных
+    const timestamp = Date.now();
+    const avatarUrl = `${path.join('avatars', filename)}?v=${timestamp}`;
+    await User.findByIdAndUpdate(_id, { avatarUrl });
+
+    // Удаляем временный файл
+    await fs.unlink(tempUpload);
+
+    res.json({ avatarUrl });
+  } catch (error) {
+    console.error('Error changing avatar:', error);
+    res.status(500).send('Error changing avatar');
+  }
+};
+
+const removeOldAvatar = async userId => {
+  try {
+    const files = await fs.readdir(avatarDir);
+    const userAvatarPattern = new RegExp(`^avatar_${userId}\\..*`);
+
+    for (const file of files) {
+      if (userAvatarPattern.test(file)) {
+        await fs.unlink(path.join(avatarDir, file));
+      }
+    }
+  } catch (error) {
+    console.error('Error removing old avatar:', error);
+  }
+};
+
+const processAndSaveImage = async (inputPath, outputPath) => {
+  try {
+    const image = await Jimp.read(inputPath);
+    await image.cover(300, 300).writeAsync(outputPath);
+  } catch (error) {
+    console.error('Error processing image:', error);
+    throw error;
+  }
 };
 
 module.exports = {
