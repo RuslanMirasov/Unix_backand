@@ -17,7 +17,7 @@ const getAll = async (req, res) => {
   //Сортировка
   let sortObject = { _id: -1 };
   if (sort) {
-    const [sortField, sortOrder] = sort.split('-');
+    const [sortField, sortOrder] = sort.split('_');
     sortObject = { [sortField]: sortOrder === 'desc' ? -1 : 1 }; // asc/desc
   }
 
