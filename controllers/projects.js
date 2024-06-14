@@ -5,13 +5,27 @@ const { ctrlWrapper, HttpError, fetchMetadata } = require('../helpers');
 // GET ALL PROJECTS
 const getAll = async (req, res) => {
   const { _id: owner } = req.user; // получаем данные о пользователе из поля owner в коллекции
-  const { page = 1, limit = 9 } = req.query; //получаем запросы из адресной строки ?page=1&limit=10
+  const { page = 1, limit = 9, q, sort } = req.query; //получаем запросы из адресной строки ?page=1&limit=10
   const skip = (page - 1) * limit;
-  const result = await Project.find({ owner })
-    .sort({ _id: -1 })
+  const query = { owner };
+
+  //Поиск
+  if (q) {
+    query.name = { $regex: q, $options: 'i' };
+  }
+
+  //Сортировка
+  let sortObject = { _id: -1 };
+  if (sort) {
+    const [sortField, sortOrder] = sort.split('-');
+    sortObject = { [sortField]: sortOrder === 'desc' ? -1 : 1 }; // asc/desc
+  }
+
+  const result = await Project.find(query)
+    .sort(sortObject)
     .skip(skip)
     .limit(parseInt(limit))
-    .populate('owner', '-createdAt -updatedAt'); // метод позволяет получить не только id а все данные хозяина проекта
+    .populate('owner', '_id');
   res.json(result);
 };
 

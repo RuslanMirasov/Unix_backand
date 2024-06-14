@@ -13,7 +13,7 @@ const User = require('../models/user');
 
 const { ctrlWrapper, HttpError, generateAvatar } = require('../helpers');
 
-// REGISTRATION / SIGNOUT
+// REGISTRATION
 const register = async (req, res) => {
   const { email, password, avatarUrl } = req.body;
 
@@ -45,12 +45,20 @@ const login = async (req, res) => {
     throw HttpError(401, 'Email or Password invalid!');
   }
 
-  // Проверяем, существует ли уже токен
-  let token = user.token;
+  // Проверяем, существует ли уже токен и валидный ли он
+  let token = null;
+  if (user.token) {
+    try {
+      jwt.verify(user.token, SECRET_KEY);
+      token = user.token;
+    } catch (err) {
+      await User.findByIdAndUpdate(user._id, { token: '' });
+    }
+  }
+
   if (!token) {
-    // Генерируем новый JWT token, если токен не существует
     const payload = { id: user._id };
-    token = jwt.sign(payload, SECRET_KEY, { expiresIn: '23h' });
+    token = jwt.sign(payload, SECRET_KEY, { expiresIn: '48h' });
     await User.findByIdAndUpdate(user._id, { token });
   }
 
@@ -62,6 +70,17 @@ const login = async (req, res) => {
       avatarUrl: user.avatarUrl,
       subscribe: user.subscribe,
     },
+  });
+};
+
+// GET CURRENT USER
+const getCurrent = async (req, res) => {
+  const { email, name, avatarUrl, subscribe } = req.user;
+  res.json({
+    name,
+    email,
+    avatarUrl,
+    subscribe,
   });
 };
 
@@ -89,17 +108,6 @@ const updateUser = async (req, res) => {
   const result = await User.findByIdAndUpdate(user._id, { name, subscribe, email }, { new: true });
 
   res.json(result);
-};
-
-// GET CURRENT USER
-const getCurrent = async (req, res) => {
-  const { email, name, avatarUrl, subscribe } = req.user;
-  res.json({
-    name,
-    email,
-    avatarUrl,
-    subscribe,
-  });
 };
 
 //LOGOUT

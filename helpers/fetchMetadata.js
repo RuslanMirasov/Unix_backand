@@ -41,7 +41,7 @@ async function fetchMetadata(url) {
     const image =
       head('meta[property="og:image"]').attr('content') ||
       head('meta[name="og:image"]').attr('content') ||
-      DB_URL + '/img/placeholder.jpg';
+      '';
 
     return { title, image };
   } catch (error) {
