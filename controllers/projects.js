@@ -15,7 +15,7 @@ const getAll = async (req, res) => {
   }
 
   //Сортировка
-  let sortObject = { _id: -1 };
+  let sortObject = { lastview: -1 };
   if (sort) {
     const [sortField, sortOrder] = sort.split('_');
     sortObject = { [sortField]: sortOrder === 'desc' ? -1 : 1 }; // asc/desc
@@ -32,7 +32,7 @@ const getAll = async (req, res) => {
 // GET PROJECT BY ID
 const getById = async (req, res) => {
   const { id } = req.params;
-  const result = await Project.findById(id, '-createdAt -updatedAt');
+  const result = await Project.findById(id, '-createdAt -updatedAt').populate('owner', '_id name');
   if (!result) {
     throw HttpError(404);
   }
@@ -72,6 +72,16 @@ const updateById = async (req, res) => {
   res.json(result);
 };
 
+// UPDATE VIEWS
+const updateViews = async (req, res) => {
+  const { id } = req.params;
+  const result = await Project.findByIdAndUpdate(id, req.body, { new: true });
+  if (!result) {
+    throw HttpError(404);
+  }
+  res.json(result);
+};
+
 // DELETE PROJECT
 const deleteById = async (req, res) => {
   const { id } = req.params;
@@ -90,4 +100,5 @@ module.exports = {
   add: ctrlWrapper(add),
   updateById: ctrlWrapper(updateById),
   deleteById: ctrlWrapper(deleteById),
+  updateViews: ctrlWrapper(updateViews),
 };

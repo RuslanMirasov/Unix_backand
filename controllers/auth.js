@@ -65,6 +65,7 @@ const login = async (req, res) => {
   res.json({
     token,
     user: {
+      _id: user._id,
       name: user.name,
       email: user.email,
       avatarUrl: user.avatarUrl,
@@ -75,8 +76,9 @@ const login = async (req, res) => {
 
 // GET CURRENT USER
 const getCurrent = async (req, res) => {
-  const { email, name, avatarUrl, subscribe } = req.user;
+  const { _id, email, name, avatarUrl, subscribe } = req.user;
   res.json({
+    _id,
     name,
     email,
     avatarUrl,

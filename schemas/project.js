@@ -27,7 +27,15 @@ const projectSchema = Joi.object({
   owner: Joi.string(),
 });
 
+//Login
+const lastviewSchema = Joi.object({
+  id: Joi.string().required(),
+  lastview: Joi.date(),
+  views: Joi.number(),
+});
+
 module.exports = {
   projectMongooseSchema,
   projectSchema,
+  lastviewSchema,
 };
