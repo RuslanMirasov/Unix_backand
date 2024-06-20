@@ -7,6 +7,7 @@ require('dotenv').config();
 const authRouter = require('./routes/api/auth');
 const usersRouter = require('./routes/api/users');
 const projectsRouter = require('./routes/api/projects');
+const tasksRouter = require('./routes/api/tasks');
 
 // app настройки сервера
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.static('public'));
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/projects', projectsRouter);
+app.use('/api/tasks', tasksRouter);
 
 // Обработки ошибок
 app.use(async (req, res) => {

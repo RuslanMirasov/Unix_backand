@@ -27,7 +27,7 @@ const projectSchema = Joi.object({
   owner: Joi.string(),
 });
 
-//Login
+//add Views
 const lastviewSchema = Joi.object({
   id: Joi.string().required(),
   lastview: Joi.date(),
