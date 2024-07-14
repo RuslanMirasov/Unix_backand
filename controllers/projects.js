@@ -21,11 +21,7 @@ const getAll = async (req, res) => {
     sortObject = { [sortField]: sortOrder === 'desc' ? -1 : 1 }; // asc/desc
   }
 
-  const result = await Project.find(query)
-    .sort(sortObject)
-    .skip(skip)
-    .limit(parseInt(limit))
-    .populate('owner', '_id');
+  const result = await Project.find(query).sort(sortObject).skip(skip).limit(parseInt(limit)).populate('owner', '_id');
   res.json(result);
 };
 
@@ -73,14 +69,14 @@ const updateById = async (req, res) => {
 };
 
 // UPDATE VIEWS
-const updateViews = async (req, res) => {
-  const { id } = req.params;
-  const result = await Project.findByIdAndUpdate(id, req.body, { new: true });
-  if (!result) {
-    throw HttpError(404);
-  }
-  res.json(result);
-};
+// const updateViews = async (req, res) => {
+//   const { id } = req.params;
+//   const result = await Project.findByIdAndUpdate(id, req.body, { new: true });
+//   if (!result) {
+//     throw HttpError(404);
+//   }
+//   res.json(result);
+// };
 
 // DELETE PROJECT
 const deleteById = async (req, res) => {
@@ -100,5 +96,4 @@ module.exports = {
   add: ctrlWrapper(add),
   updateById: ctrlWrapper(updateById),
   deleteById: ctrlWrapper(deleteById),
-  updateViews: ctrlWrapper(updateViews),
 };

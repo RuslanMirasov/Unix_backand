@@ -34,8 +34,14 @@ const lastviewSchema = Joi.object({
   views: Joi.number(),
 });
 
+//update name
+const updateNameSchema = Joi.object({
+  name: Joi.string().required(),
+});
+
 module.exports = {
   projectMongooseSchema,
   projectSchema,
   lastviewSchema,
+  updateNameSchema,
 };
