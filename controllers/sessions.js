@@ -5,12 +5,34 @@ const { ctrlWrapper, HttpError, cropVideo } = require('../helpers');
 
 // GET ALL SESSIONS
 const getAll = async (req, res) => {
-  const { session } = req.query;
-  const result = await Session.find({ session }).sort({ _id: 1 });
+  const { project } = req.query;
+  const result = await Session.find({ project }).sort({ _id: -1 });
   if (!result) {
     throw HttpError(404);
   }
-  res.json(result);
+
+  const overall = result.length;
+
+  // Подсчет сессий со статусом 'done'
+  const success = result.filter(session => session.status === 'done').length || 0;
+
+  // Подсчет процента успешных сессий
+  const rate = `${((success / result.length) * 100).toFixed(1)}%` || '0%';
+
+  // Вычисление среднего значения длительности
+  const totalDuration = result.reduce((sum, session) => sum + session.duration, 0);
+  const averageDuration = totalDuration / result.length;
+  const minutes = Math.floor(averageDuration / 60000);
+  const seconds = Math.floor((averageDuration % 60000) / 1000);
+  const time = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}` || '00:00';
+
+  res.json({
+    overall,
+    success,
+    rate,
+    time,
+    collection: result,
+  });
 };
 
 // GET SESSION BY ID
